@@ -41,7 +41,7 @@ public class Servo_Test extends OpMode {
         x.setPower(z);
         y.setPower(z);
         z = 0;
-
+//whynot
     }
     @Override
     public void stop() {
