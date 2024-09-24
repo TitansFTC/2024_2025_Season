@@ -33,12 +33,12 @@ public class Servo_Test extends OpMode {
     @Override
     public void loop() {
         if (gamepad1.a) {
-            z = .2;
+            z = -.2;
         }
         if (gamepad1.b) {
             z = .2;
         }
-        x.setPower(z);
+        x.setPower(-z);
         y.setPower(z);
         z = 0;
 //whynot
