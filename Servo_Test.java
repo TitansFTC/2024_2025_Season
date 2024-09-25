@@ -15,12 +15,14 @@ public class Servo_Test extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private CRServo x = null;
     private CRServo y = null;
+    private DcMotor z = null;
 
     @Override
     public void init() {
        telemetry.addData("Status", "Initialized");
        x = hardwareMap.get(CRServoImpl.class, "x");
        y = hardwareMap.get(CRServoImpl.class, "y");
+       z = hardwareMap.get(DcMotor.class, "z");
     }
     @Override
     public void init_loop() {
@@ -29,8 +31,9 @@ public class Servo_Test extends OpMode {
     public void start() {
         runtime.reset();
     }
-    double z = 0;
+    double k = 0;
     double s = .2;
+    double g = 0;
     @Override
     public void loop() {
         if (gamepad1.x) {
@@ -40,14 +43,21 @@ public class Servo_Test extends OpMode {
             s = .2;
         }
         if (gamepad1.a) {
-            z = -s;
+            k = -s;
         }
         if (gamepad1.b) {
-            z = s;
+            k = s;
         }
-        x.setPower(-z);
-        y.setPower(z);
-        z = 0;
+        x.setPower(-k);
+        y.setPower(k);
+        k = 0;
+        if (gamepad1.left_bumper) {
+            g = .6;
+        }
+        if (gamepad1.right_bumper) {
+            g = -.6;
+        }
+        z.setPower(g);
 //whynot
     }
     @Override
