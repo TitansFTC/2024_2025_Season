@@ -34,6 +34,7 @@ public class Servo_Test extends OpMode {
     double k = 0;
     double s = .2;
     double g = 0;
+    double v = 0;
     @Override
     public void loop() {
         if (gamepad1.x) {
@@ -59,6 +60,25 @@ public class Servo_Test extends OpMode {
         }
         z.setPower(g);
         g = 0;
+        if (gamepad1.dpad_right){
+            v = .1;
+            x.setPower(v);
+        }
+        if (gamepad1.dpad_left){
+            v = .1;
+            x.setPower(-v);
+        }
+        if (gamepad1.dpad_up){
+            v = .1;
+            y.setPower(v);
+        }
+        if (gamepad1.dpad_down){
+            v = .1;
+            y.setPower(-v);
+        }
+        x.setPower(0);
+        y.setPower(0);
+        
 //whynot
     }
     @Override
