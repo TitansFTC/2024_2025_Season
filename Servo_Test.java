@@ -52,12 +52,13 @@ public class Servo_Test extends OpMode {
         y.setPower(k);
         k = 0;
         if (gamepad1.left_bumper) {
-            g = .6;
+            g = .3;
         }
         if (gamepad1.right_bumper) {
-            g = -.6;
+            g = -.3;
         }
         z.setPower(g);
+        g = 0;
 //whynot
     }
     @Override
