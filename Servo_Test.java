@@ -39,7 +39,7 @@ public class Servo_Test extends OpMode {
     public void loop() {
 
 
-        k = 0;
+
         if (gamepad1.left_bumper) {
             g = .3;
         }
@@ -56,11 +56,22 @@ public class Servo_Test extends OpMode {
         if (gamepad1.dpad_down){
             v -= .1;
         }
+        if (gamepad1.dpad_left){
+            k += .1;
+        }
+        if (gamepad1.dpad_right){
+            k -= .1;
+        }
+
         if (gamepad1.x){
             x.setPosition(v);
-            y.setPosition(-v);
 
         }
+        if (gamepad1.y){
+            y.setPosition(k);
+        }
+        telemetry.addData("Status", "x position: " + v);
+        telemetry.addData("Status2", "y position: " + k);
         
 
 //whynot
