@@ -13,15 +13,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp(name="Servo Test", group="Titans TeleOps")
 public class Servo_Test extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
-    private CRServo x = null;
-    private CRServo y = null;
+    private ServoImpl x = null;
+    private ServoImpl y  = null;
     private DcMotor z = null;
 
     @Override
     public void init() {
        telemetry.addData("Status", "Initialized");
-       x = hardwareMap.get(CRServoImpl.class, "x");
-       y = hardwareMap.get(CRServoImpl.class, "y");
+       x = hardwareMap.get(ServoImpl.class, "x");
+       y = hardwareMap.get(ServoImpl.class, "y");
        z = hardwareMap.get(DcMotor.class, "z");
     }
     @Override
@@ -37,20 +37,8 @@ public class Servo_Test extends OpMode {
     double v = 0;
     @Override
     public void loop() {
-        if (gamepad1.x) {
-            s = .5;
-        }
-        if (gamepad1.y) {
-            s = .2;
-        }
-        if (gamepad1.a) {
-            k = -s;
-        }
-        if (gamepad1.b) {
-            k = s;
-        }
-        x.setPower(-k);
-        y.setPower(k);
+
+
         k = 0;
         if (gamepad1.left_bumper) {
             g = .3;
@@ -60,25 +48,21 @@ public class Servo_Test extends OpMode {
         }
         z.setPower(g);
         g = 0;
-        if (gamepad1.dpad_right){
-            v = .1;
-            x.setPower(v);
-        }
-        if (gamepad1.dpad_left){
-            v = .1;
-            x.setPower(-v);
-        }
+
+
         if (gamepad1.dpad_up){
-            v = .1;
-            y.setPower(v);
+            v += .1;
         }
         if (gamepad1.dpad_down){
-            v = .1;
-            y.setPower(-v);
+            v -= .1;
         }
-        x.setPower(0);
-        y.setPower(0);
+        if (gamepad1.x){
+            x.setPosition(v);
+            y.setPosition(-v);
+
+        }
         
+
 //whynot
     }
     @Override
