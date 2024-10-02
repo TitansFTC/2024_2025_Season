@@ -35,6 +35,10 @@ public class Servo_Test extends OpMode {
     double s = .2;
     double g = 0;
     double v = 0;
+    boolean t = false;
+    boolean o = false;
+    boolean u = false;
+    boolean i = false;
     @Override
     public void loop() {
 
@@ -50,17 +54,40 @@ public class Servo_Test extends OpMode {
         g = 0;
 
 
-        if (gamepad1.dpad_up){
+        if (gamepad1.dpad_up && t == false){
             v += .1;
+            t = true;
         }
-        if (gamepad1.dpad_down){
+        if (gamepad1.dpad_up != true){
+            t = false;
+        }
+
+
+        if (gamepad1.dpad_down && o == false){
             v -= .1;
+            o = true;
         }
-        if (gamepad1.dpad_left){
+        if (gamepad1.dpad_down != true){
+            o = false;
+        }
+
+
+        if (gamepad1.dpad_left && u == false){
             k += .1;
+            u = true;
+
         }
-        if (gamepad1.dpad_right){
+        if (gamepad1.dpad_left != true){
+            u = false;
+        }
+
+        
+        if (gamepad1.dpad_right && i == false){
             k -= .1;
+            i = true;
+        }
+        if (gamepad1.dpad_right != true){
+            i = false;
         }
 
         if (gamepad1.x){
