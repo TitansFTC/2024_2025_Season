@@ -17,8 +17,8 @@ public class Servo_Test extends OpMode {
     private ServoImpl y  = null;
     private DcMotor z = null;
     private DcMotor rf = null;
-    private DcMotorSimple lf = null;
-    private DcMotor rb = null;
+    private DcMotorSimple rb = null;
+    private DcMotor lf = null;
     private DcMotor lb = null;
 
     @Override
@@ -28,9 +28,9 @@ public class Servo_Test extends OpMode {
        y = hardwareMap.get(ServoImpl.class, "y");
        z = hardwareMap.get(DcMotor.class, "z");
         rf = hardwareMap.get(DcMotor.class, "rf");
-        lf = hardwareMap.get(DcMotorSimple.class, "lf");
+        lf = hardwareMap.get(DcMotor.class, "lf");
         lb = hardwareMap.get(DcMotor.class, "lb");
-        rb = hardwareMap.get(DcMotor.class, "rb");
+        rb = hardwareMap.get(DcMotorSimple.class, "rb");
 
     }
     @Override
