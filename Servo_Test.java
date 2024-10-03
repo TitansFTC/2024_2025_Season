@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import git com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.CRServoImpl;
@@ -16,6 +16,10 @@ public class Servo_Test extends OpMode {
     private ServoImpl x = null;
     private ServoImpl y  = null;
     private DcMotor z = null;
+    private DcMotor rf = null;
+    private DcMotorSimple lf = null;
+    private DcMotor rb = null;
+    private DcMotor lb = null;
 
     @Override
     public void init() {
@@ -23,6 +27,11 @@ public class Servo_Test extends OpMode {
        x = hardwareMap.get(ServoImpl.class, "x");
        y = hardwareMap.get(ServoImpl.class, "y");
        z = hardwareMap.get(DcMotor.class, "z");
+        rf = hardwareMap.get(DcMotor.class, "rf");
+        lf = hardwareMap.get(DcMotorSimple.class, "lf");
+        lb = hardwareMap.get(DcMotor.class, "lb");
+        rb = hardwareMap.get(DcMotor.class, "rb");
+
     }
     @Override
     public void init_loop() {
@@ -39,9 +48,41 @@ public class Servo_Test extends OpMode {
     boolean o = false;
     boolean u = false;
     boolean i = false;
+    double rp;
+    double lp;
     @Override
     public void loop() {
 
+        double sm = 2.30 - (gamepad1.right_bumper ? 1 : 0) + (gamepad1.left_bumper ? 1 : 0);
+        if (gamepad1.right_stick_x > 0) {
+            sm -= 0.75;
+
+        }
+        sm = 1.9;
+        lp = (-gamepad1.left_stick_y / sm) + (-gamepad1.right_stick_x / sm);
+        rp = (-gamepad1.left_stick_y / sm) + (gamepad1.right_stick_x / sm);
+
+        if (gamepad2.left_bumper) {
+            lb.setPower(0);
+            lf.setPower(0);
+            rb.setPower(0);
+            rf.setPower(0);
+        }else if (gamepad1.left_stick_x >= 1) {
+            lb.setPower(-0.6);
+            lf.setPower(0.6);
+            rb.setPower(0.6);
+            rf.setPower(-0.6);
+        }else if (gamepad1.left_stick_x <= -1) {
+            lb.setPower(0.6);
+            lf.setPower(-0.6);
+            rb.setPower(-0.6);
+            rf.setPower(0.6);
+        }else {
+            lb.setPower(rp);
+            lf.setPower(rp);
+            rb.setPower(lp);
+            rf.setPower(lp);
+        }
 
 
         if (gamepad1.left_bumper) {
