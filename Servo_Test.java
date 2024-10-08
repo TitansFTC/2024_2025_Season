@@ -96,7 +96,7 @@ public class Servo_Test extends OpMode {
 
 
         if (gamepad1.dpad_up && t == false){
-            v += .1;
+            v += .05;
             t = true;
         }
         if (gamepad1.dpad_up != true){
@@ -105,7 +105,7 @@ public class Servo_Test extends OpMode {
 
 
         if (gamepad1.dpad_down && o == false){
-            v -= .1;
+            v -= .05;
             o = true;
         }
         if (gamepad1.dpad_down != true){
@@ -114,7 +114,7 @@ public class Servo_Test extends OpMode {
 
 
         if (gamepad1.dpad_left && u == false){
-            k += .1;
+            k += .05;
             u = true;
 
         }
@@ -124,7 +124,7 @@ public class Servo_Test extends OpMode {
 
         
         if (gamepad1.dpad_right && i == false){
-            k -= .1;
+            k -= .05;
             i = true;
         }
         if (gamepad1.dpad_right != true){
