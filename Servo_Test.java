@@ -138,6 +138,14 @@ public class Servo_Test extends OpMode {
         if (gamepad1.y){
             y.setPosition(k);
         }
+        if (gamepad1.a){
+            x.setPosition(.7);
+            y.setPosition(.65);
+        }
+        if (gamepad1.b) {
+            x.setPosition(.85);
+            y.setPosition(.5);
+        }
         telemetry.addData("Status", "x position: " + v);
         telemetry.addData("Status2", "y position: " + k);
         
