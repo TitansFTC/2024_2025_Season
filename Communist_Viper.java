@@ -179,7 +179,7 @@ public class Communist_Viper extends OpMode {
             arp = -.6;
         }
         ar.setPower(arp);
-        le.setPower(up);
+        
         telemetry.addData("Status", "x position: " + v);
         telemetry.addData("Status2", "y position: " + k);
         telemetry.addData("Linear Slide", sp);
