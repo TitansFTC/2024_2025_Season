@@ -15,7 +15,7 @@ public class Communist_Viper extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private ServoImpl x = null;
     private ServoImpl y  = null;
-    private DcMotor z = null;
+    //private DcMotor z = null;
     private DcMotor rf = null;
     private DcMotorSimple rb = null;
     private DcMotor lf = null;
@@ -29,7 +29,7 @@ public class Communist_Viper extends OpMode {
        telemetry.addData("Status", "Initialized");
        x = hardwareMap.get(ServoImpl.class, "x");
        y = hardwareMap.get(ServoImpl.class, "y");
-       z = hardwareMap.get(DcMotor.class, "z");
+       //z = hardwareMap.get(DcMotor.class, "z");
         rf = hardwareMap.get(DcMotor.class, "rf");
         lf = hardwareMap.get(DcMotor.class, "lf");
         lb = hardwareMap.get(DcMotor.class, "lb");
@@ -98,7 +98,7 @@ public class Communist_Viper extends OpMode {
             rf.setPower(lp);
         }
 
-
+/*
         if (gamepad1.left_bumper) {
             g = .3;
         }
@@ -108,7 +108,7 @@ public class Communist_Viper extends OpMode {
         z.setPower(g);
         g = 0;
 
-
+*/
         if (gamepad1.dpad_up && t == false){
             v += .05;
             t = true;
