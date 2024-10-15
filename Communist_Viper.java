@@ -38,7 +38,7 @@ public class Communist_Viper extends OpMode {
         le = hardwareMap.get(DcMotor.class, "le");
         le2 = hardwareMap.get(DcMotor.class, "le2");
 
-        le2.setDirection(DcMotor.Direction.FORWARD);
+        le2.setDirection(DcMotorSimple.Direction.REVERSE);
         le.setDirection(DcMotor.Direction.FORWARD);
         le.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         le2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -68,6 +68,7 @@ public class Communist_Viper extends OpMode {
     public void loop() {
         double sp = le.getCurrentPosition();
         double sm = 2.30 - (gamepad1.right_bumper ? 1 : 0) + (gamepad1.left_bumper ? 1 : 0);
+        up = 0;
         if (gamepad1.right_stick_x > 0) {
             sm -= 0.75;
 
@@ -168,7 +169,7 @@ public class Communist_Viper extends OpMode {
         }
         le.setPower(up);
         le2.setPower(up);
-        up = 0;
+
         arp = 0;
         if (gamepad1.right_bumper){
             arp = .6;
@@ -178,7 +179,7 @@ public class Communist_Viper extends OpMode {
             arp = -.6;
         }
         ar.setPower(arp);
-        le.setPower(up);
+        
         telemetry.addData("Status", "x position: " + v);
         telemetry.addData("Status2", "y position: " + k);
         telemetry.addData("Linear Slide", sp);
