@@ -62,11 +62,11 @@ public class Communist_Viper extends OpMode {
     double rp;
     double lp;
     double up = 0;
-    double sp = le.getCurrentPosition();
+
     double arp  = 0;
     @Override
     public void loop() {
-
+        double sp = le.getCurrentPosition();
         double sm = 2.30 - (gamepad1.right_bumper ? 1 : 0) + (gamepad1.left_bumper ? 1 : 0);
         if (gamepad1.right_stick_x > 0) {
             sm -= 0.75;
@@ -168,6 +168,7 @@ public class Communist_Viper extends OpMode {
         }
         le.setPower(up);
         le2.setPower(up);
+        up = 0;
         arp = 0;
         if (gamepad1.right_bumper){
             arp = .6;
