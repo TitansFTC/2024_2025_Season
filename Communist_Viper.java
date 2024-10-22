@@ -42,6 +42,7 @@ public class Communist_Viper extends OpMode {
         le.setDirection(DcMotor.Direction.FORWARD);
         le.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         le2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        ar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
     @Override
