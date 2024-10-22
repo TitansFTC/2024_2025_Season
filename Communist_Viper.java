@@ -163,10 +163,10 @@ public class Communist_Viper extends OpMode {
             y.setPosition(.5);
         }
 
-        if (gamepad2.dpad_up && sp < 4200) {
+        if (gamepad2.dpad_up && sp > -4200) {
             up = 1;
         }
-        else if (gamepad2.dpad_down && sp > 0) {
+        else if (gamepad2.dpad_down && sp < 0) {
             up = -1;
         }
         le.setPower(up);
