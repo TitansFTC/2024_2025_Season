@@ -175,11 +175,11 @@ public class Communist_Viper extends OpMode {
 
         arp = 0;
         if (gamepad1.right_bumper){
-            arp = .6;
+            arp = .3;
         }
 
         if (gamepad1.left_bumper){
-            arp = -.6;
+            arp = -.3;
         }
         ar.setPower(arp);
 
