@@ -156,11 +156,11 @@ public class Communist_Viper extends OpMode {
         if (gamepad1.y){
             y.setPosition(k);
         }
-        if (gamepad1.a){
+        if (gamepad2.a){
             x.setPosition(.7);
             y.setPosition(.65);
         }
-        if (gamepad1.b) {
+        if (gamepad2.b) {
             x.setPosition(.85);
             y.setPosition(.5);
         }
@@ -176,11 +176,11 @@ public class Communist_Viper extends OpMode {
         sp = le2.getCurrentPosition();
 
         arp = 0;
-        if (gamepad1.right_bumper){
+        if (gamepad2.right_bumper){
             arp = .3;
         }
 
-        if (gamepad1.left_bumper){
+        if (gamepad2.left_bumper){
             arp = -.3;
         }
         ar.setPower(arp);
