@@ -126,7 +126,7 @@ public class Communist_Cobra extends LinearOpMode{
     }
     public void linear_distance (double up_inches) {
 
-        double up = le.getCurrentPosition();
+        double up = le2.getCurrentPosition();
 
 
         double goal_up = up_inches + up;
@@ -152,7 +152,7 @@ public class Communist_Cobra extends LinearOpMode{
         ) {
 
             sleep(50);
-            up = le.getCurrentPosition();
+            up = le2.getCurrentPosition();
 
 
 
