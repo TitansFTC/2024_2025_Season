@@ -1,14 +1,19 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.CRServoImpl;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImpl;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 @TeleOp(name="Communist_Viper", group="Titans TeleOps")
 public class Communist_Viper extends OpMode {
@@ -23,9 +28,13 @@ public class Communist_Viper extends OpMode {
     private DcMotor ar = null;
     private DcMotor le = null;
     private DcMotor le2 = null;
+    private IMU imu  = null;
 
     @Override
     public void init() {
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
+        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
        telemetry.addData("Status", "Initialized");
        x = hardwareMap.get(ServoImpl.class, "x");
        y = hardwareMap.get(ServoImpl.class, "y");
@@ -37,6 +46,8 @@ public class Communist_Viper extends OpMode {
         ar = hardwareMap.get(DcMotor.class, "ar");
         le = hardwareMap.get(DcMotor.class, "le");
         le2 = hardwareMap.get(DcMotor.class, "le2");
+        imu = hardwareMap.get(IMU.class, "imu");
+        imu.initialize(new IMU.Parameters(orientationOnRobot));
 
         le2.setDirection(DcMotorSimple.Direction.REVERSE);
         le.setDirection(DcMotor.Direction.FORWARD);
@@ -68,10 +79,13 @@ public class Communist_Viper extends OpMode {
 
 
     double arp  = 0;
+
+
     @Override
     public void loop() {
         double sp = le2.getCurrentPosition();
         double arm = ar.getCurrentPosition();
+        telemetry.addData("Heading", getHeading());
         double sm = 2.30 - (gamepad1.right_bumper ? 1 : 0) + (gamepad1.left_bumper ? 1 : 0);
         up = 0;
         if (gamepad1.right_stick_x > 0) {
@@ -167,7 +181,7 @@ public class Communist_Viper extends OpMode {
             y.setPosition(.5);
         }
 
-        if (gamepad2.dpad_up && sp > -5200) {
+        if (gamepad2.dpad_up && sp > -6200) {
             up = 1;
         }
         else if (gamepad2.dpad_down && sp < 0) {
@@ -194,6 +208,10 @@ public class Communist_Viper extends OpMode {
         
 
 //whynot
+    }
+    public double getHeading() {
+        YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
+        return orientation.getYaw(AngleUnit.DEGREES);
     }
     @Override
     public void stop() {

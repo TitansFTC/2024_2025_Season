@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static java.lang.Math.abs;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -8,6 +10,11 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImpl;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.util.Range;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 @Autonomous(name="Communist_Cobra_Auto", group="Robot")
 public class Communist_Cobra extends LinearOpMode{
     private ServoImpl x = null;
@@ -59,13 +66,15 @@ public class Communist_Cobra extends LinearOpMode{
 
         waitForStart();
         double power = 0;
-        x.setPosition(.85);
-        y.setPosition(.5);
+        x.setPosition(.7);
+        y.setPosition(.65);
         drive_distance(4, 4);
-        drive_distance(-18.5, 18.5);
-        drive_distance(6,6);
+        drive_distance(-19.5, 19.5);
+        drive_distance(16,16
+        );
         sleep(1000);
-        linear_distance(10);
+        linear_distance(4000);
+        
     }
     public void drive_distance(double left_inches, double right_inches) {
 
@@ -126,10 +135,12 @@ public class Communist_Cobra extends LinearOpMode{
     }
     public void linear_distance (double up_inches) {
 
-        double up = le2.getCurrentPosition();
+        double up = abs(le2.getCurrentPosition());
+        telemetry.addData("Lin: ", up);
 
 
         double goal_up = up_inches + up;
+        telemetry.addData("Line: ", goal_up);
 
 
 
@@ -152,7 +163,8 @@ public class Communist_Cobra extends LinearOpMode{
         ) {
 
             sleep(50);
-            up = le2.getCurrentPosition();
+            up = abs(le2.getCurrentPosition());
+            telemetry.addData("Linear:", up);
 
 
 
