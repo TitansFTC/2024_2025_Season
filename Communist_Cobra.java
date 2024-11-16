@@ -38,11 +38,16 @@ public class Communist_Cobra extends LinearOpMode{
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     DRIVE_SPEED             = 0.6;
     static final double     TURN_SPEED              = 0.5;
+    private double START_HEADING;
 
     private double rs;
+    private IMU imu  = null;
 
     @Override
     public void runOpMode() {
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
+        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
         x = hardwareMap.get(ServoImpl.class, "x");
         y = hardwareMap.get(ServoImpl.class, "y");
         //z = hardwareMap.get(DcMotor.class, "z");
@@ -53,6 +58,8 @@ public class Communist_Cobra extends LinearOpMode{
         ar = hardwareMap.get(DcMotor.class, "ar");
         le = hardwareMap.get(DcMotor.class, "le");
         le2 = hardwareMap.get(DcMotor.class, "le2");
+        imu = hardwareMap.get(IMU.class, "imu");
+        imu.initialize(new IMU.Parameters(orientationOnRobot));
 
 
         le2.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -63,17 +70,32 @@ public class Communist_Cobra extends LinearOpMode{
         ar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rb.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        START_HEADING = getHeading();
+
+
 
         waitForStart();
+        telemetry.addData("Heading", START_HEADING);
         double power = 0;
         x.setPosition(.7);
         y.setPosition(.65);
-        drive_distance(4, 4);
-        drive_distance(-19.5, 19.5);
-        drive_distance(16,16
-        );
+        drive_distance(5, 5);
+        turn_goal(90, false);
+        drive_distance(15,15);
+        turn_goal(135, false);
+
         sleep(1000);
-        linear_distance(4000);
+        linear_distance(5000);
+        ar.setPower(-.2);
+        sleep(1000);
+        ar.setPower(0);
+        linear_distance(200);
+        x.setPosition(.85);
+        y.setPosition(.5);
+        ar.setPower(.2);
+        sleep(1000);
+        drive_distance(-5,-5);
+        linear_distance(-4000);
         
     }
     public void drive_distance(double left_inches, double right_inches) {
@@ -173,6 +195,55 @@ public class Communist_Cobra extends LinearOpMode{
         le.setPower(0);
         le2.setPower(0);
 
+    }
+    public double getHeading() {
+        YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
+        return orientation.getYaw(AngleUnit.DEGREES);
+    }
+    public void turn_goal (double turn_goal, boolean turn_right){
+        double turn_posit = translate(START_HEADING + turn_goal);
+        double cur_posit = translate(getHeading());
+        if (turn_right == false){
+            //left
+            while (cur_posit < turn_posit){
+                lf.setPower(-.3);
+                rf.setPower(.3);
+                lb.setPower(-.3);
+                rb.setPower(.3);
+                cur_posit = translate(getHeading());
+
+            }
+            stop_drive();
+            return;
+        }else {
+            //right
+            while (cur_posit > turn_posit){
+                lf.setPower(.3);
+                rf.setPower(-.3);
+                lb.setPower(.3);
+                rb.setPower(-.3);
+                cur_posit = translate(getHeading());
+            }
+            stop_drive();
+            return;
+        }
+    }
+    public double translate (double number){
+        while (number < -180) {
+            number += 360;
+
+        }
+        while (number >= 180) {
+            number -= 360;
+        }
+        return number;
+    }
+    public void stop_drive() {
+        lf.setPower(0);
+        rf.setPower(0);
+        lb.setPower(0);
+        rb.setPower(0);
+        return;
     }
 
 }
