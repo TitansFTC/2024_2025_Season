@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static java.lang.Math.abs;
+
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -10,6 +12,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImpl;
+
+import java.util.Queue;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -63,7 +67,10 @@ public class Communist_Viper extends OpMode {
     }
     @Override
     public void start() {
+       str_Posit = ar.getCurrentPosition();
+       cur_Posit = str_Posit;
         runtime.reset();
+
     }
     double k = 0;
     double s = .2;
@@ -76,13 +83,30 @@ public class Communist_Viper extends OpMode {
     double rp;
     double lp;
     double up = 0;
+    double kill = 500;
 
 
     double arp  = 0;
+    double tp;
+    double cp;
+    double gp;
+    double pcp;
+    double tar_Posit_ARM;
+    double cur_Posit_ARM;
+    double rem_Dis_ARM;
+    double prop_Cont_Power_ARM;
+    double killa = 500;
+    double str_Posit;
+    double cur_Posit;
+    double prop_SPEED = .6;
+
 
 
     @Override
     public void loop() {
+        str_Posit = cur_Posit;
+        cur_Posit = ar.getCurrentPosition();
+        double posit_Diff = cur_Posit - str_Posit;
         double sp = le2.getCurrentPosition();
         double arm = ar.getCurrentPosition();
         telemetry.addData("Heading", getHeading());
@@ -129,6 +153,7 @@ public class Communist_Viper extends OpMode {
         g = 0;
 
 */
+
         if (gamepad1.dpad_up && t == false){
             v += .05;
             t = true;
@@ -181,30 +206,103 @@ public class Communist_Viper extends OpMode {
             y.setPosition(.5);
         }
 
-        if (gamepad2.dpad_up && sp > -6200) {
-            up = 1;
-        }
-        else if (gamepad2.dpad_down && sp < 0) {
-            up = -1;
-        }
-        le.setPower(up);
-        le2.setPower(up);
-        sp = le2.getCurrentPosition();
 
-        arp = 0;
-        if (gamepad2.right_bumper){
-            arp = .3;
+
+
+        if (gamepad2.x) {
+            tp = -5000;
+            cp = le2.getCurrentPosition();
+            gp = tp - cp;
+            if (abs(gp) > kill){
+                if (gp > 0){
+                    pcp = -1;
+
+                }
+                if (gp < 0){
+                    pcp = 1;
+                }
+            } else {
+                pcp = -gp/kill;
+
+            }
+            le.setPower(pcp);
+            le2.setPower(pcp);
+        }
+        else{
+            up = 0;
+            if (gamepad2.dpad_up && sp > -6200) {
+                up = 1;
+            }
+            else if (gamepad2.dpad_down && sp < 0) {
+                up = -1;
+            }
+
+
+            le.setPower(up);
+            le2.setPower(up);
+            sp = le2.getCurrentPosition();
         }
 
-        if (gamepad2.left_bumper){
-            arp = -.3;
+        if (gamepad2.left_trigger > 0.1) {
+            tar_Posit_ARM = 850;
+            cur_Posit_ARM = ar.getCurrentPosition();
+            rem_Dis_ARM = tar_Posit_ARM - cur_Posit_ARM;
+            if (abs(rem_Dis_ARM) > killa){
+                if (rem_Dis_ARM > 0){
+                    prop_Cont_Power_ARM = -prop_SPEED;
+
+                }
+                if (rem_Dis_ARM < 0){
+                    prop_Cont_Power_ARM = prop_SPEED;
+                }
+            } else {
+                prop_Cont_Power_ARM = (-rem_Dis_ARM/killa)*prop_SPEED + posit_Diff * .005;
+
+            }
+            ar.setPower(prop_Cont_Power_ARM);
+
         }
-        ar.setPower(arp);
+        else if (gamepad2.right_trigger != 0){
+            tar_Posit_ARM = 0;
+            cur_Posit_ARM = ar.getCurrentPosition();
+            rem_Dis_ARM = tar_Posit_ARM - cur_Posit_ARM;
+            if (abs(rem_Dis_ARM) > killa){
+                if (rem_Dis_ARM > 0){
+                    prop_Cont_Power_ARM = -prop_SPEED;
+
+                }
+                if (rem_Dis_ARM < 0){
+                    prop_Cont_Power_ARM = prop_SPEED;
+                }
+            } else {
+                prop_Cont_Power_ARM = (-rem_Dis_ARM/killa)*prop_SPEED ;
+
+
+            }
+            ar.setPower(prop_Cont_Power_ARM);
+        }
+        else{
+            arp = 0;
+            if (gamepad2.right_bumper){
+                arp = .3;
+            }
+
+            if (gamepad2.left_bumper){
+                arp = -.3;
+            }
+
+            ar.setPower(arp);
+        }
+
+        
+
+
 
         telemetry.addData("Status", "x position: " + v);
         telemetry.addData("Status2", "y position: " + k);
         telemetry.addData("Linear Slide", sp);
         telemetry.addData("Arm Post: ", arm);
+        telemetry.addData("Posit_Diff: ", posit_Diff);
         
 
 //whynot
@@ -216,4 +314,5 @@ public class Communist_Viper extends OpMode {
     @Override
     public void stop() {
     }
+
 }
