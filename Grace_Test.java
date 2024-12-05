@@ -1,10 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+
+// The @Disabled flag prevents the code from appearing on the driver station
+@Disabled
 @TeleOp(name="Grace Test", group="Titans TeleOps")
 public class Grace_Test extends OpMode {
     public static final double LINEAR_SLIDER_POSITION_MAX = 3999;
