@@ -6,6 +6,7 @@ import static com.qualcomm.robotcore.hardware.Servo.Direction.FORWARD;
 import static com.qualcomm.robotcore.hardware.Servo.Direction.REVERSE;
 
 import com.qualcomm.hardware.rev.RevSPARKMini;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -16,7 +17,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImpl;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-
+// The @Disabled flag prevents the code from appearing on the driver station
+@Disabled
 @TeleOp(name="Communist Spider: Main OpMode", group="Titans TeleOps")
 public class Communist_Spider_Main_Op_Mode extends OpMode
 {
