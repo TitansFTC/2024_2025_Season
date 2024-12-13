@@ -98,7 +98,7 @@ public class Communist_Viper extends OpMode {
     double killa = 500;
     double str_Posit;
     double cur_Posit;
-    double prop_SPEED = .6;
+    double prop_SPEED = .9;
 
 
 
@@ -116,7 +116,7 @@ public class Communist_Viper extends OpMode {
             sm -= 0.75;
 
         }
-        sm = 1.9;
+        sm = 1.4;
         lp = (-gamepad1.left_stick_y / sm) + (-gamepad1.right_stick_x / sm);
         rp = (-gamepad1.left_stick_y / sm) + (gamepad1.right_stick_x / sm);
 
@@ -126,15 +126,15 @@ public class Communist_Viper extends OpMode {
             rb.setPower(0);
             rf.setPower(0);
         }else if (gamepad1.left_stick_x >= 1) {
-            lb.setPower(-0.6);
-            lf.setPower(0.6);
-            rb.setPower(0.6);
-            rf.setPower(-0.6);
+            lb.setPower(-0.9);
+            lf.setPower(0.9);
+            rb.setPower(0.9);
+            rf.setPower(-0.9);
         }else if (gamepad1.left_stick_x <= -1) {
-            lb.setPower(0.6);
-            lf.setPower(-0.6);
-            rb.setPower(-0.6);
-            rf.setPower(0.6);
+            lb.setPower(0.9);
+            lf.setPower(-0.9);
+            rb.setPower(-0.9);
+            rf.setPower(0.9);
         }else {
             lb.setPower(rp);
             lf.setPower(rp);
