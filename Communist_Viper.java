@@ -100,15 +100,8 @@ public class Communist_Viper extends OpMode {
     double cur_Posit;
     double prop_SPEED = .9;
 
+    public void drive_code() {
 
-
-    @Override
-    public void loop() {
-        str_Posit = cur_Posit;
-        cur_Posit = ar.getCurrentPosition();
-        double posit_Diff = cur_Posit - str_Posit;
-        double sp = le2.getCurrentPosition();
-        double arm = ar.getCurrentPosition();
         telemetry.addData("Heading", getHeading());
         double sm = 2.30 - (gamepad1.right_bumper ? 1 : 0) + (gamepad1.left_bumper ? 1 : 0);
         up = 0;
@@ -142,6 +135,18 @@ public class Communist_Viper extends OpMode {
             rf.setPower(lp);
         }
 
+
+
+    }
+
+    @Override
+    public void loop() {
+        drive_code();
+        double sp = le2.getCurrentPosition();
+        str_Posit = cur_Posit;
+        cur_Posit = ar.getCurrentPosition();
+        double posit_Diff = cur_Posit - str_Posit;
+        double arm = ar.getCurrentPosition();
 /*
         if (gamepad1.left_bumper) {
             g = .3;
