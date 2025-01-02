@@ -72,8 +72,8 @@ public class Communist_Cobra extends LinearOpMode{
         y.setPosition(.65);
         drive_distance(5, 5);
         turn_goal(90, false);
-        drive_distance(15,15);
-        turn_goal(135, false);
+        drive_distance(11,11);
+        turn_goal(120, false);
         sleep(1000);
         linear_distance(5000);
         ar.setPower(-.2);
@@ -85,7 +85,8 @@ public class Communist_Cobra extends LinearOpMode{
         ar.setPower(.2);
         sleep(1000);
         drive_distance(-5,-5);
-        linear_distance(-4000);
+        linear_distance(-4950);
+        turn_goal(0, true);
         
     }
     public void drive_distance(double left_inches, double right_inches) {
@@ -98,20 +99,20 @@ public class Communist_Cobra extends LinearOpMode{
         rp = rf.getCurrentPosition();
         lp = lb.getCurrentPosition();
         if (goal_right > 0) {
-            rf.setPower(.5);
-            rb.setPower(.5);
+            rf.setPower(.7);
+            rb.setPower(.7);
         }
         if (goal_right < 0) {
-            rf.setPower(-.5);
-            rb.setPower(-.5);
+            rf.setPower(-.7);
+            rb.setPower(-.7);
         }
         if (goal_left > 0){
-            lf.setPower(.5);
-            lb.setPower(.5);
+            lf.setPower(.7);
+            lb.setPower(.7);
         }
         if (goal_left < 0){
-            lf.setPower(-.5);
-            lb.setPower(-.5);
+            lf.setPower(-.7);
+            lb.setPower(-.7);
         }
         rpt = rp + goal_right;
         lpt = lp + goal_left;
@@ -140,12 +141,12 @@ public class Communist_Cobra extends LinearOpMode{
         double goal_up = up_inches + up;
         telemetry.addData("Line: ", goal_up);
         if (up_inches > 0) {
-            le.setPower(.5);
-            le2.setPower(.5);
+            le.setPower(.8);
+            le2.setPower(.8);
         }
         if (up_inches < 0) {
-            le.setPower(-.5);
-            le2.setPower(-.5);
+            le.setPower(-.8);
+            le2.setPower(-.8);
         }
         while ((up_inches > 0 && up < goal_up) || (up_inches < 0 && up > goal_up)
         ) {
@@ -167,10 +168,10 @@ public class Communist_Cobra extends LinearOpMode{
         if (turn_right == false){
             //left
             while (cur_posit < turn_posit){
-                lf.setPower(-.3);
-                rf.setPower(.3);
-                lb.setPower(-.3);
-                rb.setPower(.3);
+                lf.setPower(-.5);
+                rf.setPower(.5);
+                lb.setPower(-.5);
+                rb.setPower(.5);
                 cur_posit = translate(getHeading());
             }
             stop_drive();
@@ -178,10 +179,10 @@ public class Communist_Cobra extends LinearOpMode{
         }else {
             //right
             while (cur_posit > turn_posit){
-                lf.setPower(.3);
-                rf.setPower(-.3);
-                lb.setPower(.3);
-                rb.setPower(-.3);
+                lf.setPower(.5);
+                rf.setPower(-.5);
+                lb.setPower(.5);
+                rb.setPower(-.5);
                 cur_posit = translate(getHeading());
             }
             stop_drive();

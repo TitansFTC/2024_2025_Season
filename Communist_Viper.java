@@ -33,6 +33,7 @@ public class Communist_Viper extends OpMode {
     private DcMotor le = null;
     private DcMotor le2 = null;
     private IMU imu  = null;
+    private ServoImpl cr = null;
 
     @Override
     public void init() {
@@ -51,6 +52,7 @@ public class Communist_Viper extends OpMode {
         le = hardwareMap.get(DcMotor.class, "le");
         le2 = hardwareMap.get(DcMotor.class, "le2");
         imu = hardwareMap.get(IMU.class, "imu");
+        cr = hardwareMap.get(ServoImpl.class, "cr");
         imu.initialize(new IMU.Parameters(orientationOnRobot));
 
         le2.setDirection(DcMotorSimple.Direction.REVERSE);
