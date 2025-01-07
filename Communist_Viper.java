@@ -100,6 +100,24 @@ public class Communist_Viper extends OpMode {
     double cur_Posit;
     double prop_SPEED = .9;
 
+    public void arm_code() {
+        if (gamepad1.x){
+            x.setPosition(v);
+
+        }
+        if (gamepad1.y){
+            y.setPosition(k);
+        }
+        if (gamepad2.a){
+            x.setPosition(.7);
+            y.setPosition(.65);
+        }
+        if (gamepad2.b) {
+            x.setPosition(.85);
+            y.setPosition(.5);
+        }
+
+    }
     public void drive_code() {
 
         telemetry.addData("Heading", getHeading());
@@ -142,22 +160,12 @@ public class Communist_Viper extends OpMode {
     @Override
     public void loop() {
         drive_code();
+        arm_code();
         double sp = le2.getCurrentPosition();
         str_Posit = cur_Posit;
         cur_Posit = ar.getCurrentPosition();
         double posit_Diff = cur_Posit - str_Posit;
         double arm = ar.getCurrentPosition();
-/*
-        if (gamepad1.left_bumper) {
-            g = .3;
-        }
-        if (gamepad1.right_bumper) {
-            g = -.3;
-        }
-        z.setPower(g);
-        g = 0;
-
-*/
 
         if (gamepad1.dpad_up && t == false){
             v += .05;
@@ -195,21 +203,6 @@ public class Communist_Viper extends OpMode {
             i = false;
         }
 
-        if (gamepad1.x){
-            x.setPosition(v);
-
-        }
-        if (gamepad1.y){
-            y.setPosition(k);
-        }
-        if (gamepad2.a){
-            x.setPosition(.7);
-            y.setPosition(.65);
-        }
-        if (gamepad2.b) {
-            x.setPosition(.85);
-            y.setPosition(.5);
-        }
 
 
 
@@ -310,7 +303,7 @@ public class Communist_Viper extends OpMode {
         telemetry.addData("Posit_Diff: ", posit_Diff);
         
 
-//whynot
+
     }
     public double getHeading() {
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
