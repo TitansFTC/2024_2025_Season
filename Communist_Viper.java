@@ -164,6 +164,9 @@ public class Communist_Viper extends OpMode {
     public void loop() {
         drive_code();
         arm_code();
+        oddballs();
+    }
+    public void oddballs() {
         double sp = le2.getCurrentPosition();
         str_Posit = cur_Posit;
         cur_Posit = ar.getCurrentPosition();
@@ -197,7 +200,7 @@ public class Communist_Viper extends OpMode {
             u = false;
         }
 
-        
+
         if (gamepad1.dpad_right && i == false){
             k -= .05;
             i = true;
@@ -318,7 +321,7 @@ public class Communist_Viper extends OpMode {
             ar.setPower(arp);
         }
 
-        
+
 
 
 
@@ -328,7 +331,8 @@ public class Communist_Viper extends OpMode {
         telemetry.addData("Arm Post: ", arm);
         telemetry.addData("Posit_Diff: ", posit_Diff);
         telemetry.addData("Rotate: ", sck);
-        
+
+
 
 
     }
