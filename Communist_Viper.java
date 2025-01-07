@@ -101,6 +101,7 @@ public class Communist_Viper extends OpMode {
     double str_Posit;
     double cur_Posit;
     double prop_SPEED = .9;
+    double sck = 0;
 
     public void drive_code() {
 
@@ -212,28 +213,35 @@ public class Communist_Viper extends OpMode {
             x.setPosition(.85);
             y.setPosition(.5);
         }
+        if (gamepad2.left_stick_x >= 1){
+            sck += .05;
+            cr.setPosition(sck);
 
+        }
+        if (gamepad2.left_stick_x <= -1){
+            sck -= .05;
+            cr.setPosition(sck);
+        }
 
+        if (gamepad2.right_stick_y >= 1){
+            cr.setPosition(.5);
+        }
+        if (gamepad2.right_stick_y <= -1){
+            cr.setPosition(.15);
+        }
 
 
         if (gamepad2.x) {
-            tp = -5000;
-            cp = le2.getCurrentPosition();
-            gp = tp - cp;
-            if (abs(gp) > kill){
-                if (gp > 0){
-                    pcp = -1;
-
-                }
-                if (gp < 0){
-                    pcp = 1;
-                }
-            } else {
-                pcp = -gp/kill;
-
-            }
-            le.setPower(pcp);
-            le2.setPower(pcp);
+            Linear_Preset(-5000);
+        }
+        else if (gamepad2.y) {
+            Linear_Preset(-50);
+        }
+        else if (gamepad2.dpad_left) {
+            Linear_Preset(-2700);
+        }
+        else if (gamepad2.dpad_right){
+            Linear_Preset(-2700);
         }
         else{
             up = 0;
@@ -310,10 +318,31 @@ public class Communist_Viper extends OpMode {
         telemetry.addData("Linear Slide", sp);
         telemetry.addData("Arm Post: ", arm);
         telemetry.addData("Posit_Diff: ", posit_Diff);
+        telemetry.addData("Rotate: ", sck);
         
 
 //whynot
     }
+    public void Linear_Preset(double Target_Posit){
+        tp = Target_Posit;
+        cp = le2.getCurrentPosition();
+        gp = tp - cp;
+        if (abs(gp) > kill){
+            if (gp > 0){
+                pcp = -1;
+
+            }
+            if (gp < 0){
+                pcp = 1;
+            }
+        } else {
+            pcp = -gp/kill;
+
+        }
+        le.setPower(pcp);
+        le2.setPower(pcp);
+    }
+
     public double getHeading() {
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
         return orientation.getYaw(AngleUnit.DEGREES);
