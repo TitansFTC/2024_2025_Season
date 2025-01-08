@@ -103,6 +103,8 @@ public class Communist_Viper extends OpMode {
     double prop_SPEED = .9;
     double sck = 0;
 
+
+
     public void arm_code() {
         if (gamepad1.x){
             x.setPosition(v);
@@ -121,6 +123,14 @@ public class Communist_Viper extends OpMode {
         }
 
     }
+
+    public void apply_straight_power(double pow) {
+        lb.setPower(pow);
+        lf.setPower(-pow);
+        rb.setPower(-pow);
+        rf.setPower(pow);
+    }
+
     public void drive_code() {
 
         telemetry.addData("Heading", getHeading());
@@ -135,20 +145,11 @@ public class Communist_Viper extends OpMode {
         rp = (-gamepad1.left_stick_y / sm) + (gamepad1.right_stick_x / sm);
 
         if (gamepad2.left_bumper) {
-            lb.setPower(0);
-            lf.setPower(0);
-            rb.setPower(0);
-            rf.setPower(0);
-        }else if (gamepad1.left_stick_x >= 1) {
-            lb.setPower(-0.9);
-            lf.setPower(0.9);
-            rb.setPower(0.9);
-            rf.setPower(-0.9);
-        }else if (gamepad1.left_stick_x <= -1) {
-            lb.setPower(0.9);
-            lf.setPower(-0.9);
-            rb.setPower(-0.9);
-            rf.setPower(0.9);
+            apply_straight_power(0);
+        } else if (gamepad1.left_stick_x >= 1) {
+            apply_straight_power(-0.9);
+        } else if (gamepad1.left_stick_x <= -1) {
+            apply_straight_power(0.9);
         }else {
             lb.setPower(rp);
             lf.setPower(rp);
@@ -172,43 +173,6 @@ public class Communist_Viper extends OpMode {
         cur_Posit = ar.getCurrentPosition();
         double posit_Diff = cur_Posit - str_Posit;
         double arm = ar.getCurrentPosition();
-
-        if (gamepad1.dpad_up && t == false){
-            v += .05;
-            t = true;
-        }
-        if (gamepad1.dpad_up != true){
-            t = false;
-        }
-
-
-        if (gamepad1.dpad_down && o == false){
-            v -= .05;
-            o = true;
-        }
-        if (gamepad1.dpad_down != true){
-            o = false;
-        }
-
-
-        if (gamepad1.dpad_left && u == false){
-            k += .05;
-            u = true;
-
-        }
-        if (gamepad1.dpad_left != true){
-            u = false;
-        }
-
-
-        if (gamepad1.dpad_right && i == false){
-            k -= .05;
-            i = true;
-        }
-        if (gamepad1.dpad_right != true){
-            i = false;
-        }
-
         if (gamepad1.x){
             x.setPosition(v);
 
