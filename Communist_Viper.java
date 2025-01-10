@@ -19,6 +19,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
+
+
 @TeleOp(name="Communist_Viper", group="Titans TeleOps")
 public class Communist_Viper extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
@@ -34,6 +36,7 @@ public class Communist_Viper extends OpMode {
     private DcMotor le2 = null;
     private IMU imu  = null;
     private ServoImpl cr = null;
+    GoBildaPinpointDriver odo;
 
     @Override
     public void init() {
@@ -54,6 +57,7 @@ public class Communist_Viper extends OpMode {
         imu = hardwareMap.get(IMU.class, "imu");
         cr = hardwareMap.get(ServoImpl.class, "cr");
         imu.initialize(new IMU.Parameters(orientationOnRobot));
+        
 
         le2.setDirection(DcMotorSimple.Direction.REVERSE);
         le.setDirection(DcMotor.Direction.FORWARD);
