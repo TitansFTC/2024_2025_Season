@@ -18,7 +18,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import java.util.Locale;
 
 
 @TeleOp(name="Communist_Viper", group="Titans TeleOps")
@@ -37,6 +40,7 @@ public class Communist_Viper extends OpMode {
     private IMU imu  = null;
     private ServoImpl cr = null;
     GoBildaPinpointDriver odo;
+    double oldTime = 0;
 
     @Override
     public void init() {
@@ -57,6 +61,16 @@ public class Communist_Viper extends OpMode {
         imu = hardwareMap.get(IMU.class, "imu");
         cr = hardwareMap.get(ServoImpl.class, "cr");
         imu.initialize(new IMU.Parameters(orientationOnRobot));
+        odo.setOffsets(-84.0, -168.0);
+        odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        odo.resetPosAndIMU();
+        odo.resetPosAndIMU();
+        telemetry.addData("Status", "Initialized");
+        telemetry.addData("X offset", odo.getXOffset());
+        telemetry.addData("Y offset", odo.getYOffset());
+        telemetry.addData("Device Version Number:", odo.getDeviceVersion());
+        telemetry.addData("Device Scalar", odo.getYawScalar());
+        telemetry.update();
         
 
         le2.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -106,6 +120,7 @@ public class Communist_Viper extends OpMode {
     double cur_Posit;
     double prop_SPEED = .9;
     double sck = 0;
+    double test;
 
 
 
@@ -169,9 +184,16 @@ public class Communist_Viper extends OpMode {
     public void loop() {
         drive_code();
         arm_code();
-        oddballs();
+        useless();
+        odo.update();
+        Pose2D pos = odo.getPosition();
+        String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
+        telemetry.addData("Position", data);
+        Pose2D vel = odo.getVelocity();
+        String velocity = String.format(Locale.US,"{XVel: %.3f, YVel: %.3f, HVel: %.3f}", vel.getX(DistanceUnit.MM), vel.getY(DistanceUnit.MM), vel.getHeading(AngleUnit.DEGREES));
+        telemetry.addData("Velocity", velocity);
     }
-    public void oddballs() {
+    public void useless() {
         double sp = le2.getCurrentPosition();
         str_Posit = cur_Posit;
         cur_Posit = ar.getCurrentPosition();

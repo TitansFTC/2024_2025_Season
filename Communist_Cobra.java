@@ -15,6 +15,11 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+
+import java.util.Locale;
 @Autonomous(name="Communist_Cobra_Auto", group="Robot")
 public class Communist_Cobra extends LinearOpMode{
     private ServoImpl x = null;
@@ -39,6 +44,9 @@ public class Communist_Cobra extends LinearOpMode{
     private double START_HEADING;
     private double rs;
     private IMU imu  = null;
+    GoBildaPinpointDriver odo;
+    double oldTime = 0;
+
     @Override
     public void runOpMode() {
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
@@ -55,6 +63,7 @@ public class Communist_Cobra extends LinearOpMode{
         le = hardwareMap.get(DcMotor.class, "le");
         le2 = hardwareMap.get(DcMotor.class, "le2");
         imu = hardwareMap.get(IMU.class, "imu");
+        odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
         imu.initialize(new IMU.Parameters(orientationOnRobot));
         le2.setDirection(DcMotorSimple.Direction.REVERSE);
         le.setDirection(DcMotor.Direction.FORWARD);
@@ -64,8 +73,21 @@ public class Communist_Cobra extends LinearOpMode{
         ar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rb.setDirection(DcMotorSimple.Direction.REVERSE);
         START_HEADING = getHeading();
+        odo.setOffsets(-84.0, -168.0);
+        odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        odo.resetPosAndIMU();
+
+        telemetry.addData("Status", "Initialized");
+        telemetry.addData("X offset", odo.getXOffset());
+        telemetry.addData("Y offset", odo.getYOffset());
+        telemetry.addData("Device Version Number:", odo.getDeviceVersion());
+        telemetry.addData("Device Scalar", odo.getYawScalar());
+        telemetry.update();
+
 
         waitForStart();
+        resetRuntime();
+        //while (opModeIsActive()) {
         telemetry.addData("Heading", START_HEADING);
         double power = 0;
         x.setPosition(.7);
@@ -87,7 +109,7 @@ public class Communist_Cobra extends LinearOpMode{
         drive_distance(-5,-5);
         linear_distance(-4950);
         turn_goal(0, true);
-        
+        //}
     }
     public void drive_distance(double left_inches, double right_inches) {
         double goal_left = left_inches * TICKS_PER_INCH;
