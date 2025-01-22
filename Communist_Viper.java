@@ -37,7 +37,7 @@ public class Communist_Viper extends OpMode {
     private DcMotor ar = null;
     private DcMotor le = null;
     private DcMotor le2 = null;
-    private IMU imu  = null;
+    // private IMU imu  = null;
     private ServoImpl cr = null;
     GoBildaPinpointDriver odo;
     double oldTime = 0;
@@ -47,10 +47,10 @@ public class Communist_Viper extends OpMode {
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
         RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
-       telemetry.addData("Status", "Initialized");
-       x = hardwareMap.get(ServoImpl.class, "x");
-       y = hardwareMap.get(ServoImpl.class, "y");
-       //z = hardwareMap.get(DcMotor.class, "z");
+        telemetry.addData("Status", "Initialized");
+        x = hardwareMap.get(ServoImpl.class, "x");
+        y = hardwareMap.get(ServoImpl.class, "y");
+        //z = hardwareMap.get(DcMotor.class, "z");
         rf = hardwareMap.get(DcMotor.class, "rf");
         lf = hardwareMap.get(DcMotor.class, "lf");
         lb = hardwareMap.get(DcMotor.class, "lb");
@@ -58,13 +58,17 @@ public class Communist_Viper extends OpMode {
         ar = hardwareMap.get(DcMotor.class, "ar");
         le = hardwareMap.get(DcMotor.class, "le");
         le2 = hardwareMap.get(DcMotor.class, "le2");
-        imu = hardwareMap.get(IMU.class, "imu");
+        // imu = hardwareMap.get(IMU.class, "imu");
         cr = hardwareMap.get(ServoImpl.class, "cr");
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
-        odo.setOffsets(-84.0, -168.0);
+        // imu.initialize(new IMU.Parameters(orientationOnRobot));
+        odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
+        // odo.setOffsets(-84.0, -168.0);
+        odo.setOffsets(0.0, 0.0);
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD,
+                                 GoBildaPinpointDriver.EncoderDirection.REVERSED);
         odo.resetPosAndIMU();
-        odo.resetPosAndIMU();
+        // odo.resetPosAndIMU();
         telemetry.addData("Status", "Initialized");
         telemetry.addData("X offset", odo.getXOffset());
         telemetry.addData("Y offset", odo.getYOffset());
@@ -152,7 +156,7 @@ public class Communist_Viper extends OpMode {
 
     public void drive_code() {
 
-        telemetry.addData("Heading", getHeading());
+        // telemetry.addData("Heading", getHeading());
         double sm = 2.30 - (gamepad1.right_bumper ? 1 : 0) + (gamepad1.left_bumper ? 1 : 0);
         up = 0;
         if (gamepad1.right_stick_x > 0) {
@@ -346,10 +350,12 @@ public class Communist_Viper extends OpMode {
         le2.setPower(pcp);
     }
 
+    /*
     public double getHeading() {
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
         return orientation.getYaw(AngleUnit.DEGREES);
     }
+    */
     @Override
     public void stop() {
     }
