@@ -22,7 +22,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import java.util.Locale;
-
+import java.lang.Math;
 
 @TeleOp(name="Communist_Viper", group="Titans TeleOps")
 public class Communist_Viper extends OpMode {
@@ -184,7 +184,7 @@ public class Communist_Viper extends OpMode {
     public void loop() {
         drive_code();
         arm_code();
-        useless();
+        NOT_useless();
         odo.update();
         Pose2D pos = odo.getPosition();
         String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
@@ -193,7 +193,7 @@ public class Communist_Viper extends OpMode {
         String velocity = String.format(Locale.US,"{XVel: %.3f, YVel: %.3f, HVel: %.3f}", vel.getX(DistanceUnit.MM), vel.getY(DistanceUnit.MM), vel.getHeading(AngleUnit.DEGREES));
         telemetry.addData("Velocity", velocity);
     }
-    public void useless() {
+    public void NOT_useless() {
         double sp = le2.getCurrentPosition();
         str_Posit = cur_Posit;
         cur_Posit = ar.getCurrentPosition();
@@ -310,7 +310,6 @@ public class Communist_Viper extends OpMode {
 
             ar.setPower(arp);
         }
-
 
 
 
