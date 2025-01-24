@@ -125,6 +125,7 @@ public class Communist_Viper extends OpMode {
     double prop_SPEED = .9;
     double sck = 0;
     double test;
+    double ARK;
 
 
 
@@ -196,6 +197,8 @@ public class Communist_Viper extends OpMode {
         Pose2D vel = odo.getVelocity();
         String velocity = String.format(Locale.US,"{XVel: %.3f, YVel: %.3f, HVel: %.3f}", vel.getX(DistanceUnit.MM), vel.getY(DistanceUnit.MM), vel.getHeading(AngleUnit.DEGREES));
         telemetry.addData("Velocity", velocity);
+        // ARK = ar.getCurrentPosition();
+        // telemetry.addData("Arm Post: ", ARK);
     }
     public void NOT_useless() {
         double sp = le2.getCurrentPosition();
@@ -314,6 +317,8 @@ public class Communist_Viper extends OpMode {
 
             ar.setPower(arp);
         }
+        ARK = ar.getCurrentPosition();
+
 
 
 
@@ -321,7 +326,7 @@ public class Communist_Viper extends OpMode {
         telemetry.addData("Status", "x position: " + v);
         telemetry.addData("Status2", "y position: " + k);
         telemetry.addData("Linear Slide", sp);
-        telemetry.addData("Arm Post: ", arm);
+        telemetry.addData("Arm Post: ", ARK);
         telemetry.addData("Posit_Diff: ", posit_Diff);
         telemetry.addData("Rotate: ", sck);
 

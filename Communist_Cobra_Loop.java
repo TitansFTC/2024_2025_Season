@@ -5,6 +5,7 @@ import static java.lang.Math.abs;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -21,7 +22,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import java.lang.Math;
 
 import java.util.Locale;
-@Autonomous(name="Communist_Cobra_Auto", group="Robot")
+@Autonomous(name="Communist_Cobra_Loop_Auto", group="Robot")
 public class Communist_Cobra_Loop extends LinearOpMode{
     private ServoImpl x = null;
     private ServoImpl y  = null;
@@ -44,7 +45,7 @@ public class Communist_Cobra_Loop extends LinearOpMode{
     static final double     TURN_SPEED              = 0.5;
     private double START_HEADING;
     private double rs;
-    private IMU imu  = null;
+    //private IMU imu  = null;
     GoBildaPinpointDriver odo;
     double oldTime = 0;
     double arm_target;
@@ -79,7 +80,7 @@ public class Communist_Cobra_Loop extends LinearOpMode{
     double rel_Y;
     double prop_PowX;
     double prop_PowY;
-    double prop_Scl = 1;
+    double prop_Scl = (1/Math.sqrt(2));
     double pow;
 
 
@@ -98,9 +99,9 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         ar = hardwareMap.get(DcMotor.class, "ar");
         le = hardwareMap.get(DcMotor.class, "le");
         le2 = hardwareMap.get(DcMotor.class, "le2");
-        imu = hardwareMap.get(IMU.class, "imu");
+        //imu = hardwareMap.get(IMU.class, "imu");
         odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
+        //imu.initialize(new IMU.Parameters(orientationOnRobot));
         le2.setDirection(DcMotorSimple.Direction.REVERSE);
         le.setDirection(DcMotor.Direction.FORWARD);
         lb.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -108,9 +109,11 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         le2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         ar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rb.setDirection(DcMotorSimple.Direction.REVERSE);
-        START_HEADING = getHeading();
-        odo.setOffsets(-84.0, -168.0);
+        //START_HEADING = getHeading();
+        odo.setOffsets(0, 0);
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD,
+                GoBildaPinpointDriver.EncoderDirection.REVERSED);
         odo.resetPosAndIMU();
 
         telemetry.addData("Status", "Initialized");
@@ -123,7 +126,7 @@ public class Communist_Cobra_Loop extends LinearOpMode{
 
         waitForStart();
         odo.update();
-        update_Tar(850, 0, 0, 0);
+        update_Tar(850, 0, 0, 150);
         while (true) {
             update();
         }
@@ -199,7 +202,7 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         le.setPower(0);
         le2.setPower(0);
     }
-    public double getHeading() {
+    /*public double getHeading() {
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
         return orientation.getYaw(AngleUnit.DEGREES);
     }
@@ -229,7 +232,7 @@ public class Communist_Cobra_Loop extends LinearOpMode{
             stop_drive();
             return;
         }
-    }
+    */
     public double translate (double number){
         while (number < -180) {
             number += 360;
@@ -286,13 +289,26 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         le2.setPower(pcp);
         pos = odo.getPosition();
         C = pos.getHeading(AngleUnit.DEGREES);
-        A = 90 + C - Math.toDegrees(Math.atan(tar_pos_Y/tar_pos_X));
-        rel_X = Math.cos(Math.toRadians(A));
-        rel_Y = -Math.sin(Math.toRadians(A));
-        lf.setPower((-rel_Y + rel_X) * prop_Scl);
-        rf.setPower((-rel_Y + rel_X) * prop_Scl);
-        lb.setPower((-rel_Y + -rel_X) * prop_Scl);
-        rb.setPower((-rel_Y + -rel_X) * prop_Scl);
+        if (tar_pos_X != 0 || tar_pos_Y != 0) {
+            double beta = 90;
+            if (tar_pos_Y < 0) {
+                beta = -90;
+            }
+
+            if (tar_pos_X != 0 ){
+                beta = Math.toDegrees(Math.atan(tar_pos_Y/tar_pos_X));
+            }
+            if (tar_pos_X < 0){
+                beta = beta - 180;
+            }
+            A = 90 + C - beta;
+            rel_X = Math.cos(Math.toRadians(A));
+            rel_Y = -Math.sin(Math.toRadians(A));
+            lf.setPower((-rel_Y + rel_X) * prop_Scl);
+            rf.setPower((-rel_Y + rel_X) * prop_Scl);
+            lb.setPower((-rel_Y + -rel_X) * prop_Scl);
+            rb.setPower((-rel_Y + -rel_X) * prop_Scl);
+        }
 
 
     }
