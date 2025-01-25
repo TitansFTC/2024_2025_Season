@@ -80,7 +80,7 @@ public class Communist_Cobra_Loop extends LinearOpMode{
     double rel_Y;
     double prop_PowX;
     double prop_PowY;
-    double prop_Scl = (1/Math.sqrt(2));
+    double prop_Scl = (1/(Math.sqrt(2) * 2));
     double pow;
 
 
@@ -126,9 +126,10 @@ public class Communist_Cobra_Loop extends LinearOpMode{
 
         waitForStart();
         odo.update();
-        update_Tar(850, 0, 0, 150);
+        update_Tar(0, 0, 300, 0);
         while (true) {
             update();
+            telemetry.update();
         }
 
 
@@ -250,6 +251,8 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         return;
     }
     public void update() {
+        odo.update();
+
         tar_Posit_ARM = tar_Pos_ARM_MAIN;
         cur_Posit_ARM = ar.getCurrentPosition();
         rem_Dis_ARM = tar_Posit_ARM - cur_Posit_ARM;
@@ -289,25 +292,41 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         le2.setPower(pcp);
         pos = odo.getPosition();
         C = pos.getHeading(AngleUnit.DEGREES);
-        if (tar_pos_X != 0 || tar_pos_Y != 0) {
+        double rel_tar_X = tar_pos_X - pos.getX(DistanceUnit.MM);
+        double rel_tar_Y = tar_pos_Y - pos.getY(DistanceUnit.MM);
+        if (rel_tar_X != 0 || rel_tar_Y != 0) {
             double beta = 90;
-            if (tar_pos_Y < 0) {
+            if (rel_tar_Y < 0) {
                 beta = -90;
             }
 
-            if (tar_pos_X != 0 ){
-                beta = Math.toDegrees(Math.atan(tar_pos_Y/tar_pos_X));
+            if (rel_tar_X != 0 ){
+                beta = Math.toDegrees(Math.atan(rel_tar_Y/rel_tar_X));
             }
-            if (tar_pos_X < 0){
+            if (rel_tar_X < 0){
                 beta = beta - 180;
             }
             A = 90 + C - beta;
-            rel_X = Math.cos(Math.toRadians(A));
-            rel_Y = -Math.sin(Math.toRadians(A));
-            lf.setPower((-rel_Y + rel_X) * prop_Scl);
-            rf.setPower((-rel_Y + rel_X) * prop_Scl);
-            lb.setPower((-rel_Y + -rel_X) * prop_Scl);
-            rb.setPower((-rel_Y + -rel_X) * prop_Scl);
+            rel_X = -Math.sin(Math.toRadians(A));
+            rel_Y = Math.cos(Math.toRadians(A));
+            telemetry.update();
+            telemetry.addData("rel_X: ", rel_X);
+            telemetry.addData("rel_Y: ", rel_Y);
+            telemetry.addData("Heading (odo): ", odo.getHeading());
+            telemetry.addData("Heading (pos): ", pos.getHeading(AngleUnit.DEGREES));
+            telemetry.addData("rel_tar_X: ", rel_tar_X);
+            telemetry.addData("rel_tar_Y: ", rel_tar_Y);
+
+
+            telemetry.update();
+
+
+            lf.setPower((rel_Y + rel_X) * prop_Scl);
+            rf.setPower((rel_Y + -rel_X) * prop_Scl);
+            lb.setPower((rel_Y + -rel_X) * prop_Scl);
+            rb.setPower((rel_Y + rel_X) * prop_Scl);
+
+
         }
 
 
