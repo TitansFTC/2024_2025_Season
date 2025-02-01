@@ -73,7 +73,7 @@ public class Communist_Cobra extends LinearOpMode{
         ar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rb.setDirection(DcMotorSimple.Direction.REVERSE);
         START_HEADING = getHeading();
-        odo.setOffsets(-84.0, -168.0);
+        odo.setOffsets(0, 0);
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
         odo.resetPosAndIMU();
 

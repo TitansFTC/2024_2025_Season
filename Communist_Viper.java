@@ -227,12 +227,13 @@ public class Communist_Viper extends OpMode {
             cr.setPosition(sck);
         }
 
-        if (gamepad2.right_stick_y >= 1){
+        if (gamepad2.x ){
             cr.setPosition(.5);
         }
-        if (gamepad2.right_stick_y <= -1){
+        if (gamepad2.y){
             cr.setPosition(.15);
         }
+        /*
 
 
         if (gamepad2.x) {
@@ -247,12 +248,20 @@ public class Communist_Viper extends OpMode {
         else if (gamepad2.dpad_right){
             Linear_Preset(-2700);
         }
+
+         */
+        if (gamepad2.dpad_up){
+            Linear_Preset(-5000);
+        }
+        else if (gamepad2.dpad_down){
+            Linear_Preset(-50);
+        }
         else{
             up = 0;
-            if (gamepad2.dpad_up && sp > -6200) {
+            if ((gamepad2.left_stick_y >= .1) && sp > -6200) {
                 up = 1;
             }
-            else if (gamepad2.dpad_down && sp < 0) {
+            else if ((gamepad2.left_stick_y <= -.1) && sp < 0) {
                 up = -1;
             }
 
