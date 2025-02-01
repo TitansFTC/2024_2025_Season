@@ -119,10 +119,10 @@ public class Communist_Viper extends OpMode {
     double cur_Posit_ARM;
     double rem_Dis_ARM;
     double prop_Cont_Power_ARM;
-    double killa = 500;
+    double killa = 1100;
     double str_Posit;
     double cur_Posit;
-    double prop_SPEED = .9;
+    double prop_SPEED = .7;
     double sck = 0;
     double test;
     double ARK;
@@ -137,14 +137,7 @@ public class Communist_Viper extends OpMode {
         if (gamepad1.y){
             y.setPosition(k);
         }
-        if (gamepad2.a){
-            x.setPosition(.7);
-            y.setPosition(.65);
-        }
-        if (gamepad2.b) {
-            x.setPosition(.85);
-            y.setPosition(.5);
-        }
+
 
     }
 
@@ -213,13 +206,15 @@ public class Communist_Viper extends OpMode {
         if (gamepad1.y){
             y.setPosition(k);
         }
+        //close
         if (gamepad2.a){
             x.setPosition(.7);
             y.setPosition(.65);
         }
+        //open
         if (gamepad2.b) {
-            x.setPosition(.85);
-            y.setPosition(.5);
+            x.setPosition(.8);
+            y.setPosition(.55);
         }
         if (gamepad2.left_stick_x >= 1){
             sck += .05;
@@ -268,19 +263,19 @@ public class Communist_Viper extends OpMode {
         }
 
         if (gamepad2.left_trigger > 0.1) {
-            tar_Posit_ARM = 850;
+            tar_Posit_ARM = 1000;
             cur_Posit_ARM = ar.getCurrentPosition();
             rem_Dis_ARM = tar_Posit_ARM - cur_Posit_ARM;
             if (abs(rem_Dis_ARM) > killa){
                 if (rem_Dis_ARM > 0){
-                    prop_Cont_Power_ARM = -prop_SPEED;
+                    prop_Cont_Power_ARM = prop_SPEED;
 
                 }
                 if (rem_Dis_ARM < 0){
-                    prop_Cont_Power_ARM = prop_SPEED;
+                    prop_Cont_Power_ARM = -prop_SPEED;
                 }
             } else {
-                prop_Cont_Power_ARM = (-rem_Dis_ARM/killa)*prop_SPEED + posit_Diff * .005;
+                prop_Cont_Power_ARM = (rem_Dis_ARM/killa)*prop_SPEED + posit_Diff * .0001;
 
             }
             ar.setPower(prop_Cont_Power_ARM);
@@ -292,14 +287,14 @@ public class Communist_Viper extends OpMode {
             rem_Dis_ARM = tar_Posit_ARM - cur_Posit_ARM;
             if (abs(rem_Dis_ARM) > killa){
                 if (rem_Dis_ARM > 0){
-                    prop_Cont_Power_ARM = -prop_SPEED;
+                    prop_Cont_Power_ARM = prop_SPEED;
 
                 }
                 if (rem_Dis_ARM < 0){
-                    prop_Cont_Power_ARM = prop_SPEED;
+                    prop_Cont_Power_ARM = -prop_SPEED;
                 }
             } else {
-                prop_Cont_Power_ARM = (-rem_Dis_ARM/killa)*prop_SPEED ;
+                prop_Cont_Power_ARM = (rem_Dis_ARM/killa)*prop_SPEED ;
 
 
             }

@@ -20,6 +20,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import java.lang.Math;
+import java.util.Calendar;
+import java.util.Timer;
 
 import java.util.Locale;
 @Autonomous(name="Communist_Cobra_Loop_Auto", group="Robot")
@@ -80,8 +82,16 @@ public class Communist_Cobra_Loop extends LinearOpMode{
     double rel_Y;
     double prop_PowX;
     double prop_PowY;
-    double prop_Scl = (1/(Math.sqrt(2) * 2));
+    //double prop_Scl = (1/(Math.sqrt(2)));
     double pow;
+    double rel_tar_XM;
+    double rel_tar_YM;
+    double rel_tar_X;
+    double rel_tar_Y;
+    double cur_T;
+    double srt_T;
+    double tar_T;
+    double rel_T;
 
 
     @Override
@@ -126,11 +136,49 @@ public class Communist_Cobra_Loop extends LinearOpMode{
 
         waitForStart();
         odo.update();
-        update_Tar(0, 0, 300, 0);
-        while (true) {
+        update_Tar(0, 0, -415, 262, 132);
+        res_T();
+        while ((dist_tar() > 10) && (gt_T() <= 5)  ) {
             update();
             telemetry.update();
+
         }
+
+        stop_drive();
+        sleep(2000);
+        update_Tar(0, 0, -249, 524, -3);
+        res_T();
+        while ((dist_tar() > 10) && (gt_T() <= 5)  ) {
+            update();
+            telemetry.update();
+
+        }
+        stop_drive();
+        sleep(2000);
+        update_Tar(0,0, -507, 539, -5);
+        res_T();
+        while ((dist_tar() > 10) && (gt_T() <= 5)  ) {
+            update();
+            telemetry.update();
+
+        }
+        stop_drive();
+        sleep(2000);
+        update_Tar(0,0, -565, 547, 16);
+        res_T();
+        while ((dist_tar() > 10) && (gt_T() <= 5)  ) {
+            update();
+            telemetry.update();
+
+        }
+        stop_drive();
+
+        while (true){
+
+
+        }
+
+
 
 
     }
@@ -292,9 +340,11 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         le2.setPower(pcp);
         pos = odo.getPosition();
         C = pos.getHeading(AngleUnit.DEGREES);
-        double rel_tar_X = tar_pos_X - pos.getX(DistanceUnit.MM);
-        double rel_tar_Y = tar_pos_Y - pos.getY(DistanceUnit.MM);
-        if (rel_tar_X != 0 || rel_tar_Y != 0) {
+        rel_tar_X = tar_pos_X - pos.getX(DistanceUnit.MM);
+        rel_tar_Y = tar_pos_Y - pos.getY(DistanceUnit.MM);
+
+
+        if ((rel_tar_X != 0) || (rel_tar_Y != 0) || (tar_T != pos.getHeading(AngleUnit.DEGREES))) {
             double beta = 90;
             if (rel_tar_Y < 0) {
                 beta = -90;
@@ -306,9 +356,21 @@ public class Communist_Cobra_Loop extends LinearOpMode{
             if (rel_tar_X < 0){
                 beta = beta - 180;
             }
+
             A = 90 + C - beta;
-            rel_X = -Math.sin(Math.toRadians(A));
+            rel_X = Math.sin(Math.toRadians(A));
             rel_Y = Math.cos(Math.toRadians(A));
+            if (Math.abs(pos.getHeading(AngleUnit.DEGREES) - tar_T) >= 30) {
+                if (tar_T > pos.getHeading(AngleUnit.DEGREES)){
+                    rel_T = .5;
+                }
+                else {
+                    rel_T = -.5;
+                }
+            }
+            else {
+                rel_T = ((tar_T - pos.getHeading(AngleUnit.DEGREES) )/30) * .5;
+            }
             telemetry.update();
             telemetry.addData("rel_X: ", rel_X);
             telemetry.addData("rel_Y: ", rel_Y);
@@ -316,27 +378,74 @@ public class Communist_Cobra_Loop extends LinearOpMode{
             telemetry.addData("Heading (pos): ", pos.getHeading(AngleUnit.DEGREES));
             telemetry.addData("rel_tar_X: ", rel_tar_X);
             telemetry.addData("rel_tar_Y: ", rel_tar_Y);
+            telemetry.addData("Beta: ", beta);
+            telemetry.addData("A: ", A);
+            telemetry.addData("C: ", C);
+            telemetry.addData("odoX: ", pos.getX(DistanceUnit.MM));
+            telemetry.addData("odoY: ", pos.getY(DistanceUnit.MM));
 
 
             telemetry.update();
+            double slow = 1;
+            if (dist_tar() < 200){
+                slow = dist_tar()/200;
+
+            }
+
+            double lfp = ((rel_Y + rel_X )  * slow - rel_T);
+            double rfp = ((rel_Y + -rel_X )  * slow + rel_T);
+            double lbp = ((rel_Y + -rel_X )  * slow - rel_T);
+            double rbp = ((rel_Y + rel_X )  * slow + rel_T);
+            if ((Math.abs(lfp) >= 1) || (Math.abs(rfp) >= 1) || (Math.abs(lbp) >= 1) || (Math.abs(rbp) >= 1)){
+                double k = Math.max(Math.max(Math.abs(lfp), rfp), Math.max(rbp, lbp));
+                lfp = lfp/k;
+                rfp = rfp/k;
+                rbp = rbp/k;
+                lbp = lbp/k;
+            }
 
 
-            lf.setPower((rel_Y + rel_X) * prop_Scl);
-            rf.setPower((rel_Y + -rel_X) * prop_Scl);
-            lb.setPower((rel_Y + -rel_X) * prop_Scl);
-            rb.setPower((rel_Y + rel_X) * prop_Scl);
+
+            lf.setPower(lfp);
+            rf.setPower(rfp);
+            lb.setPower(lbp);
+            rb.setPower(rbp);
 
 
         }
 
 
     }
-    public void update_Tar(double at, double lt, double tx, double ty) {
+    public void update_Tar(double at, double lt, double tx, double ty, double tt) {
         tar_Pos_ARM_MAIN = at;
         Target_Posit = lt;
         tar_pos_X = tx;
         tar_pos_Y  = ty;
+        tar_T = tt;
 
+
+    }
+    public double dist_tar(){
+        odo.update();
+        pos = odo.getPosition();
+        double distance = Math.sqrt(Math.pow((tar_pos_X - pos.getX(DistanceUnit.MM)), 2) + (Math.pow((tar_pos_Y - pos.getY(DistanceUnit.MM)), 2)));
+        return(distance);
+    }
+    public void res_T(){
+         srt_T = (double) System.currentTimeMillis()/1000.0;
+         cur_T = (double) System.currentTimeMillis()/1000.0;
+    }
+    public double gt_T(){
+        cur_T = (double) System.currentTimeMillis()/1000.0;
+        return (cur_T- srt_T);
+    }
+    public void close(){
+        x.setPosition(.7);
+        y.setPosition(.65);
+    }
+    public void open(){
+        x.setPosition(.8);
+        y.setPosition(.55);
     }
 
 }
