@@ -226,8 +226,9 @@ public class Communist_Viper extends OpMode {
             sck -= .05;
             cr.setPosition(sck);
         }
+        //horizontal
 
-        if (gamepad2.x ){
+        if (gamepad2.x || gamepad2.dpad_up || gamepad2.dpad_down){
             cr.setPosition(.5);
         }
         if (gamepad2.y){
@@ -255,6 +256,9 @@ public class Communist_Viper extends OpMode {
         }
         else if (gamepad2.dpad_down){
             Linear_Preset(-50);
+        }
+        else if (gamepad2.right_stick_y >= .1){
+            Linear_Preset(-2500);
         }
         else{
             up = 0;
@@ -290,8 +294,27 @@ public class Communist_Viper extends OpMode {
             ar.setPower(prop_Cont_Power_ARM);
 
         }
-        else if (gamepad2.right_trigger != 0){
+        else if ((gamepad2.right_trigger != 0) || (gamepad2.right_stick_y >= .1)){
             tar_Posit_ARM = 0;
+            cur_Posit_ARM = ar.getCurrentPosition();
+            rem_Dis_ARM = tar_Posit_ARM - cur_Posit_ARM;
+            if (abs(rem_Dis_ARM) > killa){
+                if (rem_Dis_ARM > 0){
+                    prop_Cont_Power_ARM = prop_SPEED;
+
+                }
+                if (rem_Dis_ARM < 0){
+                    prop_Cont_Power_ARM = -prop_SPEED;
+                }
+            } else {
+                prop_Cont_Power_ARM = (rem_Dis_ARM/killa)*prop_SPEED ;
+
+
+            }
+            ar.setPower(prop_Cont_Power_ARM);
+        }
+        else if (gamepad2.dpad_up || gamepad2.dpad_down){
+            tar_Posit_ARM = 400;
             cur_Posit_ARM = ar.getCurrentPosition();
             rem_Dis_ARM = tar_Posit_ARM - cur_Posit_ARM;
             if (abs(rem_Dis_ARM) > killa){

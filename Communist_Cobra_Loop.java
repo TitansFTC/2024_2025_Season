@@ -47,6 +47,7 @@ public class Communist_Cobra_Loop extends LinearOpMode{
     static final double     TURN_SPEED              = 0.5;
     private double START_HEADING;
     private double rs;
+    private ServoImpl cr = null;
     //private IMU imu  = null;
     GoBildaPinpointDriver odo;
     double oldTime = 0;
@@ -109,6 +110,7 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         ar = hardwareMap.get(DcMotor.class, "ar");
         le = hardwareMap.get(DcMotor.class, "le");
         le2 = hardwareMap.get(DcMotor.class, "le2");
+        cr = hardwareMap.get(ServoImpl.class, "cr");
         //imu = hardwareMap.get(IMU.class, "imu");
         odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
         //imu.initialize(new IMU.Parameters(orientationOnRobot));
@@ -132,55 +134,67 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         telemetry.addData("Device Version Number:", odo.getDeviceVersion());
         telemetry.addData("Device Scalar", odo.getYawScalar());
         telemetry.update();
-
-
         waitForStart();
         odo.update();
-        update_Tar(0, 0, -415, 262, 132);
+        close();
+        score();
+
+        update_Tar(400, -5000, -249, 514, -3);
         res_T();
-        while ((dist_tar() > 10) && (gt_T() <= 5)  ) {
+        while ( (gt_T() <= 1) ) {
             update();
             telemetry.update();
-
         }
-
-        stop_drive();
-        sleep(2000);
-        update_Tar(0, 0, -249, 524, -3);
+        update_Tar(1000, -60, -249, 514, -3);
         res_T();
-        while ((dist_tar() > 10) && (gt_T() <= 5)  ) {
+        while ( (gt_T() <= 2.25) ) {
             update();
             telemetry.update();
-
         }
-        stop_drive();
-        sleep(2000);
-        update_Tar(0,0, -507, 539, -5);
+        close();
+        sleep(400);
+        score();
+        update_Tar(400,-5000, -507, 529, -5);
         res_T();
-        while ((dist_tar() > 10) && (gt_T() <= 5)  ) {
+        while ((gt_T() <= 1)  ) {
             update();
             telemetry.update();
-
         }
-        stop_drive();
-        sleep(2000);
-        update_Tar(0,0, -565, 547, 16);
+        update_Tar(1000,-60, -507, 529, -5);
         res_T();
-        while ((dist_tar() > 10) && (gt_T() <= 5)  ) {
+        while ((gt_T() <= 2.25)  ) {
             update();
             telemetry.update();
-
         }
+        close();
+        sleep(400);
+        score();
+        update_Tar(400,-5000, -565, 547, 16);
+        res_T();
+        while ((gt_T() <= 1)  ) {
+            update();
+            telemetry.update();
+        }
+        update_Tar(1000,-60, -565, 547, 16);
+        res_T();
+        while ((gt_T() <= 2.25)  ) {
+            update();
+            telemetry.update();
+        }
+        close();
+        sleep(400);
+        score();
+        update_Tar(0, -5000, -405, 272, 132);
+        res_T();
+        while (gt_T() <= 1){
+            update();
+            telemetry.update();
+        }
+        le.setPower(0);
+        le2.setPower(0);
         stop_drive();
-
         while (true){
-
-
         }
-
-
-
-
     }
     public void drive_distance(double left_inches, double right_inches) {
         double goal_left = left_inches * TICKS_PER_INCH;
@@ -243,7 +257,6 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         }
         while ((up_inches > 0 && up < goal_up) || (up_inches < 0 && up > goal_up)
         ) {
-
             sleep(50);
             up = abs(le2.getCurrentPosition());
             telemetry.addData("Linear:", up);
@@ -307,18 +320,15 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         str_Posit = cur_Posit;
         cur_Posit = ar.getCurrentPosition();
         double posit_Diff = cur_Posit - str_Posit;
-        double arm = ar.getCurrentPosition();
         if (abs(rem_Dis_ARM) > killa){
             if (rem_Dis_ARM > 0){
-                prop_Cont_Power_ARM = -prop_SPEED;
-
-            }
-            if (rem_Dis_ARM < 0){
                 prop_Cont_Power_ARM = prop_SPEED;
             }
+            if (rem_Dis_ARM < 0){
+                prop_Cont_Power_ARM = -prop_SPEED;
+            }
         } else {
-            prop_Cont_Power_ARM = (-rem_Dis_ARM/killa)*prop_SPEED + posit_Diff * .005;
-
+            prop_Cont_Power_ARM = (rem_Dis_ARM/killa)*prop_SPEED + posit_Diff * .005;
         }
         ar.setPower(prop_Cont_Power_ARM);
         tp = Target_Posit;
@@ -327,14 +337,12 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         if (abs(gp) > kill){
             if (gp > 0){
                 pcp = -1;
-
             }
             if (gp < 0){
                 pcp = 1;
             }
         } else {
             pcp = -gp/kill;
-
         }
         le.setPower(pcp);
         le2.setPower(pcp);
@@ -342,21 +350,17 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         C = pos.getHeading(AngleUnit.DEGREES);
         rel_tar_X = tar_pos_X - pos.getX(DistanceUnit.MM);
         rel_tar_Y = tar_pos_Y - pos.getY(DistanceUnit.MM);
-
-
         if ((rel_tar_X != 0) || (rel_tar_Y != 0) || (tar_T != pos.getHeading(AngleUnit.DEGREES))) {
             double beta = 90;
             if (rel_tar_Y < 0) {
                 beta = -90;
             }
-
             if (rel_tar_X != 0 ){
                 beta = Math.toDegrees(Math.atan(rel_tar_Y/rel_tar_X));
             }
             if (rel_tar_X < 0){
                 beta = beta - 180;
             }
-
             A = 90 + C - beta;
             rel_X = Math.sin(Math.toRadians(A));
             rel_Y = Math.cos(Math.toRadians(A));
@@ -374,24 +378,21 @@ public class Communist_Cobra_Loop extends LinearOpMode{
             telemetry.update();
             telemetry.addData("rel_X: ", rel_X);
             telemetry.addData("rel_Y: ", rel_Y);
-            telemetry.addData("Heading (odo): ", odo.getHeading());
             telemetry.addData("Heading (pos): ", pos.getHeading(AngleUnit.DEGREES));
             telemetry.addData("rel_tar_X: ", rel_tar_X);
             telemetry.addData("rel_tar_Y: ", rel_tar_Y);
-            telemetry.addData("Beta: ", beta);
-            telemetry.addData("A: ", A);
-            telemetry.addData("C: ", C);
+            //telemetry.addData("Beta: ", beta);
+            //telemetry.addData("A: ", A);
+            //telemetry.addData("C: ", C);
             telemetry.addData("odoX: ", pos.getX(DistanceUnit.MM));
             telemetry.addData("odoY: ", pos.getY(DistanceUnit.MM));
-
-
+            telemetry.addData("Arm: ", tar_Pos_ARM_MAIN);
+            telemetry.addData("Arm_Pow; ", prop_Cont_Power_ARM);
             telemetry.update();
             double slow = 1;
             if (dist_tar() < 200){
                 slow = dist_tar()/200;
-
             }
-
             double lfp = ((rel_Y + rel_X )  * slow - rel_T);
             double rfp = ((rel_Y + -rel_X )  * slow + rel_T);
             double lbp = ((rel_Y + -rel_X )  * slow - rel_T);
@@ -403,15 +404,10 @@ public class Communist_Cobra_Loop extends LinearOpMode{
                 rbp = rbp/k;
                 lbp = lbp/k;
             }
-
-
-
             lf.setPower(lfp);
             rf.setPower(rfp);
             lb.setPower(lbp);
             rb.setPower(rbp);
-
-
         }
 
 
@@ -446,6 +442,23 @@ public class Communist_Cobra_Loop extends LinearOpMode{
     public void open(){
         x.setPosition(.8);
         y.setPosition(.55);
+    }
+    public void score(){
+        update_Tar(0, -5000, -405, 272, 132);
+        cr.setPosition(.5);
+        res_T();
+        while (gt_T() <= 2.25  ) {
+            update();
+            telemetry.update();
+        }
+        update_Tar(400, -5000, -405, 272, 132);
+        res_T();
+
+        while (gt_T() <= 1.5){
+            update();
+            telemetry.update();
+        }
+        open();
     }
 
 }
