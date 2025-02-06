@@ -184,6 +184,7 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         close();
         sleep(400);
         score();
+        sleep(250);
         update_Tar(0, -5000, -405, 272, 132);
         res_T();
         while (gt_T() <= 1){
