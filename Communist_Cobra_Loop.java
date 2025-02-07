@@ -194,8 +194,7 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         le.setPower(0);
         le2.setPower(0);
         stop_drive();
-        while (true){
-        }
+        ar.setPower(0);
     }
     public void drive_distance(double left_inches, double right_inches) {
         double goal_left = left_inches * TICKS_PER_INCH;
