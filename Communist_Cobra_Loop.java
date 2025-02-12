@@ -139,13 +139,13 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         close();
         score();
 
-        update_Tar(400, -5000, -249, 514, -3);
+        update_Tar(350, -5000, -249, 504, -3);
         res_T();
         while ( (gt_T() <= 1) ) {
             update();
             telemetry.update();
         }
-        update_Tar(1000, -60, -249, 514, -3);
+        update_Tar(1100, -60, -249, 504, -3);
         res_T();
         while ( (gt_T() <= 2.25) ) {
             update();
@@ -154,13 +154,13 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         close();
         sleep(400);
         score();
-        update_Tar(400,-5000, -507, 529, -5);
+        update_Tar(350,-5000, -507, 509, -5);
         res_T();
         while ((gt_T() <= 1)  ) {
             update();
             telemetry.update();
         }
-        update_Tar(1000,-60, -507, 529, -5);
+        update_Tar(1100,-60, -507, 509, -5);
         res_T();
         while ((gt_T() <= 2.25)  ) {
             update();
@@ -169,18 +169,40 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         close();
         sleep(400);
         score();
-        update_Tar(400,-5000, -565, 547, 16);
+
+
+        update_Tar(350,-5000, -565, 527, 16);
         res_T();
         while ((gt_T() <= 1)  ) {
             update();
             telemetry.update();
         }
-        update_Tar(1000,-60, -565, 547, 16);
+
+        update_Tar(1100,-60, -565, 527, 16);
         res_T();
         while ((gt_T() <= 2.25)  ) {
             update();
             telemetry.update();
         }
+
+        /*
+         update_Tar(350, -5000, -425, 646, 36.8);
+         res_T();
+         while(gt_T() <= 1){
+             update();
+             telemetry.update();
+         }
+         update_Tar(1100, -60, -425, 646, 36.8);
+         res_T();
+         while(gt_T() <= 2.25){
+             update();
+             telemetry.update();
+         }
+
+         */
+
+
+
         close();
         sleep(400);
         score();
@@ -436,12 +458,12 @@ public class Communist_Cobra_Loop extends LinearOpMode{
         return (cur_T- srt_T);
     }
     public void close(){
-        x.setPosition(.7);
-        y.setPosition(.65);
+        x.setPosition(.6);
+        y.setPosition(.75);
     }
     public void open(){
-        x.setPosition(.8);
-        y.setPosition(.55);
+        x.setPosition(.75);
+        y.setPosition(.6);
     }
     public void score(){
         update_Tar(0, -5000, -405, 272, 132);
@@ -459,6 +481,14 @@ public class Communist_Cobra_Loop extends LinearOpMode{
             telemetry.update();
         }
         open();
+    }
+    public void update_Timer(double Time){
+        res_T();
+        while(gt_T()<= Time){
+            update();
+            telemetry.update();
+        }
+
     }
 
 }

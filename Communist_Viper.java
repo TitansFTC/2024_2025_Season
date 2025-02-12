@@ -208,13 +208,13 @@ public class Communist_Viper extends OpMode {
         }
         //close
         if (gamepad2.a){
-            x.setPosition(.7);
-            y.setPosition(.65);
+            x.setPosition(.6);
+            y.setPosition(.75);
         }
         //open
         if (gamepad2.b) {
-            x.setPosition(.8);
-            y.setPosition(.55);
+            x.setPosition(.75);
+            y.setPosition(.6);
         }
         //manual rotation control
         if (gamepad2.left_stick_x >= .1){
@@ -259,7 +259,7 @@ public class Communist_Viper extends OpMode {
             Linear_Preset(-50);
         }//hanging preset
         else if (gamepad2.right_stick_y >= .1){
-            Linear_Preset(-2500);
+            Linear_Preset(-2900);
         }
         else{
             up = 0;
