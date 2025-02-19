@@ -37,6 +37,7 @@ public class Communist_Viper extends OpMode {
     private DcMotor ar = null;
     private DcMotor le = null;
     private DcMotor le2 = null;
+    private DcMotor spinny = null;
     // private IMU imu  = null;
     private ServoImpl cr = null;
     GoBildaPinpointDriver odo;
@@ -58,6 +59,7 @@ public class Communist_Viper extends OpMode {
         ar = hardwareMap.get(DcMotor.class, "ar");
         le = hardwareMap.get(DcMotor.class, "le");
         le2 = hardwareMap.get(DcMotor.class, "le2");
+        spinny = hardwareMap.get(DcMotor.class,"spinny" );
         // imu = hardwareMap.get(IMU.class, "imu");
         cr = hardwareMap.get(ServoImpl.class, "cr");
         // imu.initialize(new IMU.Parameters(orientationOnRobot));
