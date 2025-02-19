@@ -45,6 +45,7 @@ public class Communist_Viper extends OpMode {
 
     @Override
     public void init() {
+
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
         RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
@@ -86,6 +87,8 @@ public class Communist_Viper extends OpMode {
         le2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         ar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rb.setDirection(DcMotorSimple.Direction.REVERSE);
+        spinny.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        spinny.setDirection(DcMotor.Direction.FORWARD);
 
     }
     @Override
@@ -236,13 +239,18 @@ public class Communist_Viper extends OpMode {
         }
         //close
         if (gamepad2.a){
-            x.setPosition(.6);
-            y.setPosition(.75);
+           // x.setPosition(.6);
+            //y.setPosition(.75);
+            spinny.setPower(1);
         }
         //open
-        if (gamepad2.b) {
-            x.setPosition(.75);
-            y.setPosition(.6);
+        else if (gamepad2.b) {
+            //x.setPosition(.75);
+            //y.setPosition(.6);
+            spinny.setPower(-1);
+        }
+        else {
+            spinny.setPower(0);
         }
         //manual rotation control
         if (gamepad2.left_stick_x >= .1){
