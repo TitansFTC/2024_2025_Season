@@ -126,6 +126,8 @@ public class Communist_Viper extends OpMode {
     double sck = 0;
     double test;
     double ARK;
+    double whyx = 0;
+    double whyy = 0;
 
 
 
@@ -163,10 +165,11 @@ public class Communist_Viper extends OpMode {
 
         if (gamepad2.left_bumper) {
             apply_straight_power(0);
-        } else if (gamepad1.left_stick_x >= 1) {
-            apply_straight_power(-0.9);
-        } else if (gamepad1.left_stick_x <= -1) {
-            apply_straight_power(0.9);
+        }
+        else if (gamepad1.left_stick_x >= .1) {
+            apply_straight_power(-0.9 * Math.abs(gamepad1.left_stick_x));
+        } else if (gamepad1.left_stick_x <= -.1) {
+            apply_straight_power(0.9 * Math.abs(gamepad1.left_stick_x));
         }else {
             lb.setPower(rp);
             lf.setPower(rp);
@@ -194,6 +197,29 @@ public class Communist_Viper extends OpMode {
         // telemetry.addData("Arm Post: ", ARK);
     }
     public void NOT_useless() {
+        /*
+        if (gamepad1.a){
+            whyx += .1;
+        }
+        if (gamepad1.b){
+            whyx -= .1;
+        }
+        if (gamepad1.x){
+            whyy += .1;
+        }
+        if (gamepad1.y){
+            whyy -=.1;
+        }
+        if (gamepad1.left_bumper){
+            x.setPosition(whyx);
+        }
+        if (gamepad1.right_bumper){
+            y.setPosition(whyy);
+        }
+        telemetry.addData("X: ", whyx);
+        telemetry.addData("Y: ", whyy);
+        */
+
         double sp = le2.getCurrentPosition();
         str_Posit = cur_Posit;
         cur_Posit = ar.getCurrentPosition();
@@ -230,10 +256,10 @@ public class Communist_Viper extends OpMode {
         //horizontal
 
         if (gamepad2.x || gamepad2.dpad_up || gamepad2.dpad_down){
-            cr.setPosition(.5);
+            cr.setPosition(.45);
         }
         if (gamepad2.y){
-            cr.setPosition(.15);
+            cr.setPosition(.10);
         }
         /*
 
@@ -253,7 +279,7 @@ public class Communist_Viper extends OpMode {
 
          */
         if (gamepad2.dpad_up){
-            Linear_Preset(-5000);
+            Linear_Preset(-5200);
         }
         else if (gamepad2.dpad_down){
             Linear_Preset(-50);

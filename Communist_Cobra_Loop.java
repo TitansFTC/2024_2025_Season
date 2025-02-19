@@ -467,7 +467,7 @@ public class Communist_Cobra_Loop extends LinearOpMode{
     }
     public void score(){
         update_Tar(0, -5000, -405, 272, 132);
-        cr.setPosition(.5);
+        cr.setPosition(.45);
         res_T();
         while (gt_T() <= 2.25  ) {
             update();
