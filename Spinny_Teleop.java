@@ -24,12 +24,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import java.util.Locale;
 import java.lang.Math;
 
-@TeleOp(name="Communist_Viper", group="Titans TeleOps")
-public class Communist_Viper extends OpMode {
+@TeleOp(name="Spinny_Teleop", group="Titans TeleOps")
+public class Spinny_Teleop extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
-    private ServoImpl x = null;
-    private ServoImpl y  = null;
-    //private DcMotor z = null;
+    // private ServoImpl x = null;
+    // private ServoImpl y  = null;
+    // private DcMotor z = null;
     private DcMotor rf = null;
     private DcMotorSimple rb = null;
     private DcMotor lf = null;
@@ -39,7 +39,7 @@ public class Communist_Viper extends OpMode {
     private DcMotor le2 = null;
     private DcMotor spinny = null;
     // private IMU imu  = null;
-    private ServoImpl cr = null;
+    //private ServoImpl cr = null;
     GoBildaPinpointDriver odo;
     double oldTime = 0;
 
@@ -50,9 +50,9 @@ public class Communist_Viper extends OpMode {
         RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
         telemetry.addData("Status", "Initialized");
-        x = hardwareMap.get(ServoImpl.class, "x");
-        y = hardwareMap.get(ServoImpl.class, "y");
-        //z = hardwareMap.get(DcMotor.class, "z");
+        // x = hardwareMap.get(ServoImpl.class, "x");
+        // y = hardwareMap.get(ServoImpl.class, "y");
+        // z = hardwareMap.get(DcMotor.class, "z");
         rf = hardwareMap.get(DcMotor.class, "rf");
         lf = hardwareMap.get(DcMotor.class, "lf");
         lb = hardwareMap.get(DcMotor.class, "lb");
@@ -62,7 +62,7 @@ public class Communist_Viper extends OpMode {
         le2 = hardwareMap.get(DcMotor.class, "le2");
         spinny = hardwareMap.get(DcMotor.class,"spinny" );
         // imu = hardwareMap.get(IMU.class, "imu");
-        cr = hardwareMap.get(ServoImpl.class, "cr");
+        //cr = hardwareMap.get(ServoImpl.class, "cr");
         // imu.initialize(new IMU.Parameters(orientationOnRobot));
         odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
         // odo.setOffsets(-84.0, -168.0);
@@ -136,6 +136,7 @@ public class Communist_Viper extends OpMode {
 
 
 
+    /*
     public void arm_code() {
         if (gamepad1.x){
             x.setPosition(v);
@@ -147,6 +148,8 @@ public class Communist_Viper extends OpMode {
 
 
     }
+
+     */
 
     public void apply_straight_power(double pow) {
         lb.setPower(pow);
@@ -189,7 +192,7 @@ public class Communist_Viper extends OpMode {
     @Override
     public void loop() {
         drive_code();
-        arm_code();
+        //arm_code();
         NOT_useless();
         odo.update();
         Pose2D pos = odo.getPosition();
@@ -230,13 +233,15 @@ public class Communist_Viper extends OpMode {
         cur_Posit = ar.getCurrentPosition();
         double posit_Diff = cur_Posit - str_Posit;
         double arm = ar.getCurrentPosition();
-        if (gamepad1.x){
+       /* if (gamepad1.x){
             x.setPosition(v);
 
         }
         if (gamepad1.y){
             y.setPosition(k);
         }
+
+        */
         //close
         if (gamepad2.a){
            // x.setPosition(.6);
@@ -253,6 +258,7 @@ public class Communist_Viper extends OpMode {
             spinny.setPower(0);
         }
         //manual rotation control
+        /*
         if (gamepad2.left_stick_x >= .1){
             sck += .05;
             cr.setPosition(sck);
@@ -271,6 +277,9 @@ public class Communist_Viper extends OpMode {
         if (gamepad2.y){
             cr.setPosition(.10);
         }
+
+         */
+        //DIFFERENT THINGS ABOVE AND BELOW >=|
         /*
 
 
